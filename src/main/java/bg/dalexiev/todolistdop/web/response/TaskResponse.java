@@ -1,14 +1,13 @@
 package bg.dalexiev.todolistdop.web.response;
 
 import bg.dalexiev.todolistdop.domain.Task;
-import bg.dalexiev.todolistdop.domain.TaskStatus;
 import java.time.LocalDate;
 
 public record TaskResponse(
     String title,
     String description,
     LocalDate dueAt,
-    TaskStatus status,
+    String status,
     LocalDate completedAt,
     String comment,
     LocalDate cancelledAt,
@@ -16,10 +15,19 @@ public record TaskResponse(
 ) {
 
   public static TaskResponse from(Task task) {
-    return new TaskResponse(
-        task.title(), task.description(), task.dueAt(), task.status(), task.completedAt(),
-        task.comment(), task.cancelledAt(), task.reason()
-    );
+    return switch (task) {
+      case Task.CancelledTask cancelledTask -> new TaskResponse(
+          cancelledTask.title(), cancelledTask.description(), null, "CANCELLED", null,
+          null, cancelledTask.cancelledAt(), cancelledTask.reason()
+      );
+      case Task.CompletedTask completedTask -> new TaskResponse(
+          completedTask.title(), completedTask.description(), null, "COMPLETED", completedTask.completedAt(),
+          completedTask.comment(), null, null
+      );
+      case Task.PendingTask pendingTask -> new TaskResponse(
+          pendingTask.title(), pendingTask.description(), pendingTask.dueAt(), "PENDING", null, null, null, null
+      );
+    };
   }
-  
+
 }

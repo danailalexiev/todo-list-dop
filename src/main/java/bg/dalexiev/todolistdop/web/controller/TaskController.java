@@ -24,7 +24,7 @@ public class TaskController {
 
   @PostMapping("/tasks")
   public ResponseEntity<TaskResponse> createTask(@RequestBody CreateTaskRequest request) {
-    final Task newTask = taskService.createTask(request.title(), request.description(), request.dueAt());
+    final Task.PendingTask newTask = taskService.createTask(request.title(), request.description(), request.dueAt());
     return ResponseEntity.created(URI.create("/tasks/" + newTask.id())).body(TaskResponse.from(newTask));
   }
 

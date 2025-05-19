@@ -1,4 +1,4 @@
-package bg.dalexiev.todolistdop.domain;
+package bg.dalexiev.todolistdop.data;
 
 public enum TaskStatus {
   
