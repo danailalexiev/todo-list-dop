@@ -1,0 +1,11 @@
+meta {
+  name: Cancel task
+  type: http
+  seq: 5
+}
+
+patch {
+  url: http://localhost:8080/tasks/2/cancel
+  body: json
+  auth: none
+}

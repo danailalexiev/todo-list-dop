@@ -1,8 +1,8 @@
 package bg.dalexiev.todolistdop.service;
 
-import bg.dalexiev.todolistdop.domain.TaskStatus;
 import bg.dalexiev.todolistdop.data.TaskRepository;
 import bg.dalexiev.todolistdop.domain.Task;
+import bg.dalexiev.todolistdop.domain.TaskStatus;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 import java.time.LocalDate;
@@ -26,30 +26,29 @@ public class TaskService {
         .build();
     return taskRepository.save(newTask);
   }
-  
+
   @Nonnull
   public Optional<Task> completeTask(long taskId, @Nullable String comment) {
     return taskRepository.findById(taskId)
-        .filter(task -> TaskStatus.PENDING == task.getStatus())
-        .map(task -> {
-          task.setComment(comment);
-          task.setDueAt(LocalDate.now());
-          task.setStatus(TaskStatus.COMPLETED);
-          return task;
-        })
+        .filter(task -> TaskStatus.PENDING == task.status())
+        .map(task -> task.toBuilder()
+            .status(TaskStatus.COMPLETED)
+            .completedAt(LocalDate.now())
+            .comment(comment)
+            .build())
         .map(taskRepository::save);
   }
-  
+
   @Nonnull
   public Optional<Task> cancelTask(long taskId, @Nullable String reason) {
     return taskRepository.findById(taskId)
-        .filter(task -> TaskStatus.PENDING == task.getStatus())
-        .map(task -> {
-          task.setReason(reason);
-          task.setCancelledAt(LocalDate.now());
-          task.setStatus(TaskStatus.CANCELLED);
-          return task;
-        })
+        .filter(task -> TaskStatus.PENDING == task.status())
+        .map(task -> task.toBuilder()
+            .status(TaskStatus.CANCELLED)
+            .cancelledAt(LocalDate.now())
+            .reason(reason)
+            .build()
+        )
         .map(taskRepository::save);
   }
 

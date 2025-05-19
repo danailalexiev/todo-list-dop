@@ -24,15 +24,15 @@ public class TaskController {
 
   @PostMapping("/tasks")
   public ResponseEntity<TaskResponse> createTask(@RequestBody CreateTaskRequest request) {
-    final Task newTask = taskService.createTask(request.getTitle(), request.getDescription(), request.getDueAt());
-    return ResponseEntity.created(URI.create("/tasks/" + newTask.getId())).body(TaskResponse.from(newTask));
+    final Task newTask = taskService.createTask(request.title(), request.description(), request.dueAt());
+    return ResponseEntity.created(URI.create("/tasks/" + newTask.id())).body(TaskResponse.from(newTask));
   }
 
   @PatchMapping("/tasks/{taskId}/complete")
   public ResponseEntity<TaskResponse> completeTask(
       @PathVariable String taskId, @RequestBody(required = false) CompleteTaskRequest request) {
     return ResponseEntity.of(
-        taskService.completeTask(Long.parseLong(taskId), request == null ? null : request.getComment())
+        taskService.completeTask(Long.parseLong(taskId), request == null ? null : request.comment())
             .map(TaskResponse::from)
     );
   }
@@ -41,7 +41,7 @@ public class TaskController {
   public ResponseEntity<TaskResponse> cancelTask(
       @PathVariable String taskId, @RequestBody(required = false) CancelTaskRequest request) {
     return ResponseEntity.of(
-        taskService.cancelTask(Long.parseLong(taskId), request == null ? null : request.getReason())
+        taskService.cancelTask(Long.parseLong(taskId), request == null ? null : request.reason())
             .map(TaskResponse::from)
     );
   }
