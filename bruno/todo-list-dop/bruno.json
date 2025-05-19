@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "todo-list-dop",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}

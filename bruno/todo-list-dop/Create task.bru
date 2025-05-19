@@ -1,0 +1,19 @@
+meta {
+  name: Create task
+  type: http
+  seq: 3
+}
+
+post {
+  url: http://localhost:8080/tasks
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "title": "Test task from Bruno",
+    "description": "This task was created via Bruno to test the endpoint",
+    "dueAt": "20-05-2025"
+  }
+}
